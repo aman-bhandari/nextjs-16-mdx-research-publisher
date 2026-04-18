@@ -1,0 +1,75 @@
+import { ArticleJsonLd } from "@/components/ArticleJsonLd";
+
+export const frontmatter = {
+  title: "Inter-agent protocols — one-way data, bidirectional intent",
+  date: "2026-03-08",
+  summary:
+    "A short note on why the two coordination surfaces between AI agents want opposite invariants, and why conflating them into one file produces either rubber-stamping or rewriting on every integration point.",
+  topic: "multi-agent systems",
+};
+
+export const metadata = {
+  title: frontmatter.title,
+  description: frontmatter.summary,
+};
+
+<ArticleJsonLd {...frontmatter} />
+
+# {frontmatter.title}
+
+<time className="text-xs uppercase tracking-wide text-[color:var(--muted)]">
+  {frontmatter.date} · {frontmatter.topic}
+</time>
+
+Two coordination failures show up quickly when more than one agent works
+against a shared codebase. Two agents edit the same file, one overwrites the
+other, git cannot reconcile because neither knew the other was writing. And,
+independently: the upstream agent's understanding of "what we are building"
+drifts from the downstream agent's understanding over hours of autonomous
+work.
+
+The trap is that these problems want opposite invariants. Data coordination
+wants one-way flow — a single writer per shared surface, no cycles, no
+contention. Intent coordination wants bidirectional flow — every participant
+both reads and writes the shared understanding. Routing both through the same
+file forces every agent to either rubber-stamp or rewrite every change,
+because there is no signal telling them which kind of message they are looking
+at.
+
+## The two-surface split
+
+One workable shape: two files, each with a different invariant.
+
+The **data surface** lives in the producing repo. One writer per file: the
+agent that produces the data. Downstream agents read, never write. Append-only
+entries. Single-writer means no merge conflicts; append-only means the audit
+trail survives.
+
+The **intent surface** lives in a shared commons repo. Every agent has its own
+named section. Writes are scoped per section — an agent never edits another
+agent's section. The rule eliminates merges at the file level. A human
+arbiter may edit any section to resolve disagreements.
+
+Git is the serializer. No file locks. No runtime coordinator.
+
+## Why a separate commons repo
+
+Neutrality. If intent lived in the producing repo's tree, the producer would
+feel a tug to write its intent more loudly than downstream agents' intent. A
+separate repo with no agent "home turf" makes the surface equal.
+
+The cost is a small repo with two files and a README. The benefit is that the
+invariants of the intent surface — low frequency, single writer per section,
+short fields — survive the pressure of producing agents wanting to stream data
+through the same file.
+
+## What the protocol does not fit
+
+Peer-to-peer agents without a hierarchical data dependency — those want an
+event bus, not a HANDOVER file. Sub-second coordination — the protocol is
+polling, latency measured in human check-ins, not seconds. Single-agent
+setups — nothing to coordinate.
+
+For the target case (a handful of agents with one-way data dependencies and
+a human in the loop), the protocol is light, append-only, git-friendly, and
+introduces no runtime surface.

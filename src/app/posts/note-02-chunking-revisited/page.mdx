@@ -1,0 +1,71 @@
+import { ArticleJsonLd } from "@/components/ArticleJsonLd";
+
+export const frontmatter = {
+  title: "Chunking, revisited — why the upstream decision dominates",
+  date: "2026-02-28",
+  summary:
+    "Swapping the reranker, the embedding model, and the generator, in that order, before touching the chunker — a short field note from a debugging session that ended where it should have started.",
+  topic: "retrieval",
+};
+
+export const metadata = {
+  title: frontmatter.title,
+  description: frontmatter.summary,
+};
+
+<ArticleJsonLd {...frontmatter} />
+
+# {frontmatter.title}
+
+<time className="text-xs uppercase tracking-wide text-[color:var(--muted)]">
+  {frontmatter.date} · {frontmatter.topic}
+</time>
+
+A retrieval pipeline produced a confidently wrong answer. The retrieved chunk
+contained the phrase from the query but not the number in the answer. The
+reranker got swapped. Then the embedding model. Then the generator prompt.
+Twenty minutes in, none of it mattered, because the actual answer was split
+across a chunk boundary.
+
+## The upstream dominance argument
+
+A bad embedding can be swapped. A bad reranker can be tuned. A bad generator
+can be re-prompted. A bad chunk boundary splits the information across two
+records in the index, and no downstream layer has access to the original
+document to reassemble them.
+
+The chunker's decisions are load-bearing for every downstream component in a
+way none of the others are. Getting chunking right makes every downstream
+evaluation interpretable. Getting it wrong produces failure modes that look
+like retrieval bugs and waste hours of ranker debugging.
+
+## The default that is wrong
+
+Fixed-size chunking — 512 tokens, no overlap — is the default in most
+quickstart code, and it is the wrong default for any corpus with structured
+units (tables, code blocks, numbered lists, tight definition-example pairs).
+The failure mode is specific: the chunk containing the phrase from the query
+ranks high, the chunk containing the actual answer has no lexical overlap with
+the query, and the two never appear together in the top-k.
+
+## A practical starting point
+
+For a new corpus, three choices cover most cases:
+
+1. Recursive splitting that respects paragraph and sentence boundaries.
+2. 10–20% overlap between adjacent chunks.
+3. Structure-aware splitting layered on top for tables and code blocks (keep
+   the table whole, keep the code block whole).
+
+Evaluate with twenty-five hand-labelled queries. If the correct chunk is in the
+top-5 for at least 70% of them, move on to reranker tuning. If not, the
+chunker is still the bottleneck.
+
+## When to reach for semantic chunking
+
+Semantic chunking — splitting where embedding similarity between adjacent
+sentences drops — is a legitimate tool, but it is corpus-sensitive. The
+threshold is not transferable across domains; tuning it is its own project. It
+is worth the investment only after the cheaper interventions above have been
+tried and the hand-labelled retrieval metric still has daylight above the 70%
+floor.

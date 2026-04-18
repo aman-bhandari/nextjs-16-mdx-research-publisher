@@ -1,0 +1,29 @@
+{
+  "name": "nextjs-16-mdx-research-publisher",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Next.js 16 + React 19 + TypeScript 5 strict + Tailwind v4 + MDX + Schema.org JSON-LD static publisher.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mdx-js/loader": "^3.1.0",
+    "@mdx-js/react": "^3.1.0",
+    "@next/mdx": "^16.2.3",
+    "@types/mdx": "^2.0.13",
+    "next": "16.2.3",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

@@ -1,0 +1,58 @@
+import { ArticleJsonLd } from "@/components/ArticleJsonLd";
+
+export const frontmatter = {
+  title: "On evaluation as the slowest form of progress",
+  date: "2026-02-12",
+  summary:
+    "Labeling twenty-five traces by hand is slower than tuning a prompt and faster than tuning the wrong thing. A short argument for why manual evaluation beats every other investment in the first month of an LLM project.",
+  topic: "evaluation",
+};
+
+export const metadata = {
+  title: frontmatter.title,
+  description: frontmatter.summary,
+};
+
+<ArticleJsonLd {...frontmatter} />
+
+# {frontmatter.title}
+
+<time className="text-xs uppercase tracking-wide text-[color:var(--muted)]">
+  {frontmatter.date} · {frontmatter.topic}
+</time>
+
+The temptation in the first month of an LLM project is to spend it tuning
+prompts. The feedback is immediate, the iteration loop is tight, and the sense
+of progress is real. It is also, in most cases, the wrong first investment.
+
+## The hand-label detour
+
+A faster first move is to collect twenty-five traces of the current pipeline
+against real queries, print them out — or at minimum read them end-to-end, one
+at a time — and label each one on two axes: did it get the right answer, and if
+not, where upstream did the failure begin. This takes a few hours. It feels
+slow. It produces the single artefact that every later decision depends on: a
+small, concrete, domain-specific taxonomy of failure modes.
+
+Without that taxonomy, every subsequent tuning decision is guided by the prompt
+engineer's intuition about which failure matters most. With it, tuning
+decisions are cheap because the priority ordering is visible.
+
+## Why the taxonomy outlives the pipeline
+
+Prompts change. Models change. Retrievers change. The taxonomy changes only
+when the failure modes change — which is much less often. A taxonomy written in
+week one, tuned in week two, and validated against a fresh batch of traces in
+week four is often stable enough to carry the project to production.
+
+Later, the same taxonomy becomes the label schema for an LLM-judge eval. The
+cost of building the judge goes down dramatically when the categories are
+already named, because the hard work of defining what "good" means has been
+done.
+
+## The one-hour rule
+
+A practical floor: no more than one hour per week on prompt tuning until the
+first twenty-five traces have been labeled. If that rule feels constraining,
+that is because it is supposed to. The constraint is not a preference — it is a
+forcing function to move the slowest, most valuable work up the schedule.
