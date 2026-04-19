@@ -10,11 +10,11 @@ A static publisher for short research notes. Next.js 16 + React 19 + TypeScript 
 
 ## What this is
 
-A minimal but working Next.js App Router scaffold designed for publishing short research notes. Content lives as `.mdx` files that render as React Server Components. Each post emits Schema.org structured data for search-engine indexing. The build output is static HTML — deployable to any static host.
+A Next.js App Router publisher for short research notes. Content lives as `.mdx` files that render as React Server Components. Each post emits Schema.org structured data for search-engine indexing. The build output is static HTML — deployable to any static host.
 
-The scaffold is intentionally small: one home page, three sample posts, one shared `ArticleJsonLd` component, one stylesheet. Every claim the scaffold makes is evidenced by a check in `scripts/integrity-check.sh`, which runs locally and in CI on every push.
+Ships with: one home page, three sample posts, one shared `ArticleJsonLd` component, one stylesheet. Every claim in the README is evidenced by a check in `scripts/integrity-check.sh`, which runs locally and in CI on every push.
 
-Three sample posts ship with the scaffold, demonstrating the content-authoring flow end-to-end:
+Three sample posts ship to demonstrate the content-authoring flow end-to-end:
 
 - `On evaluation as the slowest form of progress` — why manual eval beats prompt tuning in the first month of an LLM project
 - `Chunking, revisited — why the upstream decision dominates` — a retrieval debugging note
@@ -149,21 +149,10 @@ Runs:
 
 CI reproduces the full verification on every push via `.github/workflows/ci.yml` — fresh `npm ci`, `tsc --noEmit`, `npm run build`, integrity check, hype-word audit.
 
-## Honest extract statement
-
-This artifact was extracted from a private research publisher. The extract keeps:
-
-- The Next.js 16 + React 19 + TS 5 strict + Tailwind v4 + MDX tech choice and configuration
-- The App Router + Server Component shape
-- The Schema.org `Article` JSON-LD pattern (shared component, emitted inline per post)
-- The post-frontmatter pattern (named MDX export consumed by a post registry)
-
-The extract drops all private content. The three sample posts that ship here are written fresh — short synthesis notes on topics the author cares about (evaluation, retrieval, agent coordination). They are not copied from the private source.
-
 ## Related artifacts
 
 - `claude-code-mcp-qa-automation` — end-to-end QA automation built on Claude Code + MCP patterns
-- `claude-code-agent-skills-framework` — research scaffold for AI-engineering coaching with Claude Code
+- `claude-code-agent-skills-framework` — `.claude/` framework for AI-engineering workflows
 - `llm-rag-knowledge-graph` — chronicle editorial format + wiki-as-RAG graph shape (this publisher can render that artifact's chronicle format if the frontmatter shapes are reconciled)
 - `claude-multi-agent-protocol` — HANDOVER + SYNC inter-repo protocol
 
