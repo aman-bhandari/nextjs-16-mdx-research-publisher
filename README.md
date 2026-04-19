@@ -1,5 +1,11 @@
 # nextjs-16-mdx-research-publisher
 
+[![CI](https://github.com/aman-bhandari/nextjs-16-mdx-research-publisher/actions/workflows/ci.yml/badge.svg)](https://github.com/aman-bhandari/nextjs-16-mdx-research-publisher/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-black.svg)](https://nextjs.org/)
+[![React 19](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev/)
+[![TypeScript strict](https://img.shields.io/badge/TypeScript-strict-3178C6.svg)](https://www.typescriptlang.org/)
+
 A static publisher for short research notes. Next.js 16 + React 19 + TypeScript 5 strict + Tailwind v4 + MDX. Schema.org `Article` JSON-LD emitted inline for every post.
 
 ## What this is
