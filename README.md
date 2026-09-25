@@ -149,13 +149,6 @@ Runs:
 
 CI reproduces the full verification on every push via `.github/workflows/ci.yml` — fresh `npm ci`, `tsc --noEmit`, `npm run build`, integrity check, hype-word audit.
 
-## Related artifacts
-
-- `claude-code-mcp-qa-automation` — end-to-end QA automation built on Claude Code + MCP patterns
-- `claude-code-agent-skills-framework` — `.claude/` framework for AI-engineering workflows
-- `llm-rag-knowledge-graph` — chronicle editorial format + wiki-as-RAG graph shape (this publisher can render that artifact's chronicle format if the frontmatter shapes are reconciled)
-- `claude-multi-agent-protocol` — HANDOVER + SYNC inter-repo protocol
-
 ## License
 
 MIT © 2026 Aman Bhandari. See `LICENSE`.
